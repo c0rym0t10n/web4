@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cory – Portfolio</title>
+
+<!-- ----------  ESTILOS  ---------- -->
+<style>
+  :root {
+    --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --panel: rgba(255, 255, 255, 0.1);
+    --panel-hover: rgba(255, 255, 255, 0.15);
+    --text: #ffffff;
+    --text-dim: rgba(255, 255, 255, 0.7);
+    --accent: #00d4ff;
+    --accent-secondary: #ff6b9d;
+    --glass-border: rgba(255, 255, 255, 0.2);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 107, 157, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(0, 212, 255, 0.2) 0%, transparent 50%);
+    z-index: -1;
+  }
+
+  /* ----------  LANDING  ---------- */
+  .landing { 
+    text-align: center;
+    background: var(--panel);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+  .search-wrap {
+    position: relative;
+    width: 320px;
+    margin: 0 auto;
+  }
+  .search {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.5rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    color: var(--text);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  .search:focus { 
+    outline: none; 
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+  }
+  .search::placeholder {
+    color: var(--text-dim);
+  }
+  .search-icon {
+    position: absolute;
+    right: 1rem; top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    pointer-events: none;
+    color: var(--text-dim);
+  }
+
+  /* Suggestions dropdown */
+  .suggestions {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: var(--panel);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 0.5rem 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  .suggestions ul { list-style: none; }
+  .suggestions li {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    border-radius: 16px;
+    margin: 0 0.5rem;
+  }
+  .suggestions li:hover { 
+    background: var(--panel-hover);
+  }
+  .s-icon { 
+    width: 24px; 
+    margin-right: 1rem; 
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  .s-label { flex: 1; font-weight: 500; }
+  .s-hint  { 
+    font-size: 0.75rem; 
+    color: var(--text-dim);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+  }
+
+  /* ----------  PROJECTS GRID  ---------- */
+  .projects { 
+    display: none; 
+    max-width: 1200px; 
+    width: 100%;
+    background: var(--panel);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+  .projects-header {
+    display:flex; 
+    justify-content: space-between; 
+    align-items:center;
+    margin-bottom:2rem;
+  }
+  .back-btn {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    color: var(--text);
+    font-size: 0.9rem; 
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  .back-btn:hover {
+    background: var(--panel-hover);
+    transform: translateY(-2px);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 1.5rem;
+  }
+  .card {
+    background: var(--panel);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(255, 107, 157, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+  .card:hover::before {
+    opacity: 1;
+  }
+  .card:hover { 
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+  .card > * {
+    position: relative;
+    z-index: 2;
+  }
+  .thumb {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px; 
+    aspect-ratio: 4/3;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(10px);
+  }
+  .title { 
+    font-weight: 600; 
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+  .desc  { 
+    font-size: 0.85rem; 
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  /* ----------  MODAL  ---------- */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+  .modal-content {
+    background: var(--panel);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    padding: 2.5rem;
+    border-radius: 24px;
+    max-width: 1000px;
+    width: 90%;
+    max-height: 85vh;
+    display: flex;
+    gap: 2.5rem;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  /* ----------  CAROUSEL  ---------- */
+  .carousel {
+    flex: 1;
+    position: relative;
+    min-height: 300px;
+  }
+
+  .carousel-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.3s ease;
+    height: 100%;
+  }
+
+  .carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 1px solid var(--glass-border);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 2;
+  }
+
+  .carousel-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .carousel-btn.prev {
+    left: 10px;
+  }
+
+  .carousel-btn.next {
+    right: 10px;
+  }
+
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+
+  .indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .indicator.active {
+    background: var(--accent);
+    transform: scale(1.2);
+  }
+
+  .description {
+    flex: 1;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .project-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .modal-content {
+      flex-direction: column;
+      padding: 1rem;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .carousel {
+      min-height: 200px;
+    }
+    
+    .carousel-container {
+      height: 200px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ----------  LANDING  ---------- -->
+<section id="landing" class="landing">
+  <h1 style="margin-bottom:2rem;font-size:2.5rem;font-weight:800;background:linear-gradient(135deg, #00d4ff 0%, #ff6b9d 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Cory Portfolio</h1>
+
+  <div class="search-wrap">
+    <input id="search" type="text" class="search" placeholder="What do you need?" autocomplete="off">
+    <span class="search-icon">🔍</span>
+    <div id="suggestions" class="suggestions" style="display:none;">
+      <ul>
+        <li data-action="projects">
+          <span class="s-icon">📁</span><span class="s-label">Projects</span><span class="s-hint">↵ open</span>
+        </li>
+        <li><span class="s-icon">📄</span><span class="s-label">CV</span><span class="s-hint">PDF</span></li>
+        <li><span class="s-icon">🎞</span><span class="s-label">Vimeo</span><span class="s-hint">reel</span></li>
+        <li><span class="s-icon">📸</span><span class="s-label">Instagram</span><span class="s-hint">feed</span></li>
+        <li><span class="s-icon">✉️</span><span class="s-label">Contact</span><span class="s-hint">email</span></li>
+      </ul>
+      <div style="border-top:1px solid #3a3a3a;margin:0.4rem 0 0.2rem;"></div>
+      <small style="color:var(--text-dim);display:block;padding:0 1rem 0.3rem;">Press Esc to cancel</small>
+    </div>
+  </div>
+</section>
+
+<!-- ----------  PROJECTS  ---------- -->
+<section id="projects" class="projects">
+  <div class="projects-header">
+    <h2 style="font-size:1.4rem;">Projects</h2>
+    <button class="back-btn" id="backBtn">← back</button>
+  </div>
+  <div class="grid">
+    <div class="card" data-index="0">
+      <div class="thumb"></div>
+      <div class="title">HBO Max Ident</div>
+      <div class="desc">C4D + Redshift • Broadcast</div>
+    </div>
+    <div class="card" data-index="1">
+      <div class="thumb"></div>
+      <div class="title">INE TikTok Campaign</div>
+      <div class="desc">Short-form social content</div>
+    </div>
+    <div class="card" data-index="2">
+      <div class="thumb"></div>
+      <div class="title">Coppel Spot</div>
+      <div class="desc">Compositing + Design</div>
+    </div>
+    <div class="card" data-index="3">
+      <div class="thumb"></div>
+      <div class="title">Pure Web Mockup</div>
+      <div class="desc">Web Design • HTML/CSS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ----------  MODAL  ---------- -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <div class="carousel" id="carousel">
+      <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack"></div>
+        <button class="carousel-btn prev" id="prevBtn">‹</button>
+        <button class="carousel-btn next" id="nextBtn">›</button>
+      </div>
+      <div class="carousel-indicators" id="indicators"></div>
+    </div>
+    <div class="description" id="description"></div>
+    <button class="modal-close" id="closeModal">×</button>
+  </div>
+</div>
+
+<!-- ----------  SCRIPT  ---------- -->
+<script>
+const searchInput = document.getElementById('search');
+const suggBox = document.getElementById('suggestions');
+const landing = document.getElementById('landing');
+const projectsPanel = document.getElementById('projects');
+const backBtn = document.getElementById('backBtn');
+const modal = document.getElementById('modal');
+const closeModal = document.getElementById('closeModal');
+const carouselTrack = document.getElementById('carouselTrack');
+const description = document.getElementById('description');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const indicators = document.getElementById('indicators');
+
+let currentSlide = 0;
+let totalSlides = 0;
+
+const projectData = [
+  {
+    title: "HBO Max Ident",
+    images: [
+      'https://via.placeholder.com/600x400/0d99ff/ffffff?text=HBO+Max+Ident+1',
+      'https://via.placeholder.com/600x400/ff6b6b/ffffff?text=HBO+Max+Ident+2',
+      'https://via.placeholder.com/600x400/4ecdc4/ffffff?text=HBO+Max+Ident+3',
+      'https://via.placeholder.com/600x400/45b7d1/ffffff?text=HBO+Max+Ident+4'
+    ],
+    text: 'Ident animado para HBO Max creado en Cinema 4D y renderizado con Redshift. Explora animación de partículas y transición suave del logo. Este proyecto involucró técnicas avanzadas de motion graphics y composición digital para crear una identidad visual impactante.'
+  },
+  {
+    title: "INE TikTok Campaign",
+    images: [
+      'https://via.placeholder.com/600x400/ff9ff3/ffffff?text=INE+Campaign+1',
+      'https://via.placeholder.com/600x400/54a0ff/ffffff?text=INE+Campaign+2',
+      'https://via.placeholder.com/600x400/5f27cd/ffffff?text=INE+Campaign+3'
+    ],
+    text: 'Campaña digital para el INE enfocada en jóvenes. Contenido vertical, edición ágil y textos llamativos para aumentar interacción. La estrategia se centró en crear contenido dinámico y atractivo para redes sociales, especialmente TikTok e Instagram.'
+  },
+  {
+    title: "Coppel Spot",
+    images: [
+      'https://via.placeholder.com/600x400/00d2d3/ffffff?text=Coppel+Spot+1',
+      'https://via.placeholder.com/600x400/ff9f43/ffffff?text=Coppel+Spot+2',
+      'https://via.placeholder.com/600x400/ee5a24/ffffff?text=Coppel+Spot+3',
+      'https://via.placeholder.com/600x400/0984e3/ffffff?text=Coppel+Spot+4',
+      'https://via.placeholder.com/600x400/a29bfe/ffffff?text=Coppel+Spot+5'
+    ],
+    text: 'Comercial para Coppel con composición digital, corrección de color y elementos motion en After Effects y DaVinci Resolve. El proyecto incluyó integración de elementos 3D, tracking avanzado y color grading profesional para lograr un resultado cinematográfico.'
+  },
+  {
+    title: "Pure Web Mockup",
+    images: [
+      'https://via.placeholder.com/600x400/6c5ce7/ffffff?text=Pure+Web+1',
+      'https://via.placeholder.com/600x400/a29bfe/ffffff?text=Pure+Web+2'
+    ],
+    text: 'Prototipo para ecommerce de limpieza natural. Diseño limpio, responsivo, accesible y enfocado en experiencia de usuario. Se implementaron principios de UX/UI modernos con especial atención a la usabilidad y conversión.'
+  }
+];
+
+// Carousel functionality
+function updateCarousel() {
+  const offset = -currentSlide * 100;
+  carouselTrack.style.transform = `translateX(${offset}%)`;
+  
+  // Update indicators
+  indicators.querySelectorAll('.indicator').forEach((indicator, index) => {
+    indicator.classList.toggle('active', index === currentSlide);
+  });
+  
+  // Show/hide navigation buttons
+  prevBtn.style.display = totalSlides > 1 ? 'flex' : 'none';
+  nextBtn.style.display = totalSlides > 1 ? 'flex' : 'none';
+}
+
+function goToSlide(index) {
+  currentSlide = Math.max(0, Math.min(index, totalSlides - 1));
+  updateCarousel();
+}
+
+function nextSlide() {
+  goToSlide(currentSlide + 1);
+}
+
+function prevSlide() {
+  goToSlide(currentSlide - 1);
+}
+
+// Event listeners for carousel
+prevBtn.addEventListener('click', prevSlide);
+nextBtn.addEventListener('click', nextSlide);
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (modal.style.display === 'flex') {
+    if (e.key === 'ArrowLeft') prevSlide();
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'Escape') modal.style.display = 'none';
+  }
+});
+
+// Search functionality
+searchInput.addEventListener('focus', () => suggBox.style.display = 'block');
+document.addEventListener('click', e => {
+  if (!searchInput.contains(e.target) && !suggBox.contains(e.target)) {
+    suggBox.style.display = 'none';
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modal.style.display !== 'flex') {
+    suggBox.style.display = 'none';
+  }
+});
+
+suggBox.querySelectorAll('li').forEach(li => {
+  li.addEventListener('click', () => {
+    if (li.dataset.action === 'projects') {
+      landing.style.display = 'none';
+      projectsPanel.style.display = 'block';
+    }
+  });
+});
+
+backBtn.addEventListener('click', () => {
+  projectsPanel.style.display = 'none';
+  landing.style.display = 'block';
+  searchInput.value = '';
+});
+
+// Project cards
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', () => {
+    const index = parseInt(card.dataset.index);
+    const data = projectData[index];
+
+    // Setup carousel
+    currentSlide = 0;
+    totalSlides = data.images.length;
+    
+    // Create slides
+    carouselTrack.innerHTML = data.images.map(src => 
+      `<div class="carousel-slide"><img src="${src}" alt="Project image"></div>`
+    ).join('');
+    
+    // Create indicators
+    indicators.innerHTML = data.images.map((_, i) => 
+      `<div class="indicator ${i === 0 ? 'active' : ''}" data-slide="${i}"></div>`
+    ).join('');
+    
+    // Add indicator click events
+    indicators.querySelectorAll('.indicator').forEach((indicator, i) => {
+      indicator.addEventListener('click', () => goToSlide(i));
+    });
+    
+    // Set description with title
+    description.innerHTML = `
+      <div class="project-title">${data.title}</div>
+      <div>${data.text}</div>
+    `;
+    
+    updateCarousel();
+    modal.style.display = 'flex';
+  });
+});
+
+closeModal.addEventListener('click', () => modal.style.display = 'none');
+
+// Close modal when clicking outside
+modal.addEventListener('click', e => {
+  if (e.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>
