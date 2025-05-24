@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cory – Portfolio</title>
+<title>CoryMotion – Portfolio</title>
 
 <!-- ----------  ESTILOS  ---------- -->
 <style>
@@ -477,6 +477,7 @@ document.querySelectorAll('.card').forEach(card => {
     indicators.innerHTML = data.images.map((_, i) => 
       `<div class="indicator ${i === 0 ? 'active' : ''}" data-slide="${i}"></div>`
     ).join('');
+    
     
     // Add indicator click events
     indicators.querySelectorAll('.indicator').forEach((indicator, i) => {
