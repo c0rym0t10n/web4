@@ -1,0 +1,11 @@
+:root {
+  --bg: #2b2b2b;
+  --panel: #1f1f1f;
+  --text: #fafafa;
+  --text-dim: #a0a0a0;
+  --accent: #0d99ff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Resto de tus estilos actuales... */
